@@ -3,9 +3,9 @@ import './LoginSignup.css'
 import axios from 'axios';
 import { useNavigate} from 'react-router-dom';
 
-import user_icon from '../Assets/person.png'
-import email_icon from '../Assets/email.png'
-import password_icon from '../Assets/password.png'
+import user_icon from '../../Assets/person.png'
+import email_icon from '../../Assets/email.png'
+import password_icon from '../../Assets/password.png'
 
 const LoginSignup = () =>{
     const navigate = useNavigate();
@@ -80,13 +80,15 @@ const LoginSignup = () =>{
                                 </div>
                                 
                                 <div className="input">
-                                    <img src="" alt="" />
+                                    <img src={user_icon} alt="" />
                                     <input type="text" placeholder='Last Name' name="" id="" 
                                     onChange={e => setLastName(e.target.value)} />
                                 </div>
                             </div>
                         }
-
+                        
+                        <br />
+                        <br/>
                         <div className="input">
                             <img src={email_icon} alt="" />
                             <input type="email" placeholder='Email' name="" id="" 
@@ -98,13 +100,20 @@ const LoginSignup = () =>{
                             <input type="password" placeholder='Password' name="" id=""
                             onChange={e => setPassword(e.target.value)}/>
                         </div>  
-                    </div>
 
-                    {action==="Sign Up"? <div><h2>Phone</h2>
-                        <div className="input">
-                            <input type="text" placeholder='' name="" id=""
-                            onChange={e => setPhone(e.target.value)}/>
-                        </div>  </div>:<div className="forgot-password">Lost Password? <span>Click Here!</span></div>}
+                        {action==="Sign Up"? 
+                            <div>
+                                {/* <h2>Phone</h2> */}
+                                <div className="input">
+                                    {/* <img src={password_icon} alt="" /> */}
+                                    <input type="text" placeholder='               Phone' name="" id=""
+                                    onChange={e => setPhone(e.target.value)}/>
+                                </div>  
+                            </div>
+                            :
+                            <div className="forgot-password">Lost Password? <span>Click Here!</span></div>
+                        }
+                    </div>
 
                     <button className='btn-submit' type="submit">Login</button>
                 </form>

@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import axios from "axios";
 
-function Order({ socket, username, room }) {
-  const [product, setProduct] = useState();
-
+function Order({ socket, username, room, product , currentprice}) {
   const [currentCustomerId, setCurrentCustomerId] = useState("");
   const [orderList, setOrderList] = useState([]);
   const [token, setToken] = useState();
@@ -13,28 +11,35 @@ function Order({ socket, username, room }) {
   const [price, setPrice] = useState("");
   const [productId, setProductId] = useState("");
   const [address, setAddress] = useState("");
+  const [orderId, setOrderId] = useState("");
+  const [orderLastId,  setOrderLastId] = useState("");
+  const [firstName, setFirstName] = useState("");
 
   const createOrder = async () => {
     if (currentCustomerId !== "") {
       const order = {
-        user_id: userId,
+        id: orderLastId,
+        user_id: null,
         customer_id : currentCustomerId,
+        customer: {
+          firstName: firstName
+        },
         quantity: quantity,
-        price: price,
-        product_id : productId,
+        price: currentprice,
+        product_id : product.id,
         address: address,
+        state: false,
         author: username,
         room: room,
-        totalPrice: price * quantity,
-        time:
-          new Date(Date.now()).getDate() +
-          " " +
-          new Date(Date.now()).getHours() +
-          ":" +
-          new Date(Date.now()).getMinutes(),
+        totalPrice: currentprice * quantity,
+        createdAt: new Date(Date.now())
+        // time:
+        //   new Date(Date.now()).getDate() +
+        //   " " +
+        //   new Date(Date.now()).getHours() +
+        //   ":" +
+        //   new Date(Date.now()).getMinutes(),
       };
-
-      // console.log(order);
 
       axios({
         url: "http://localhost:5005/order-add",
@@ -42,16 +47,15 @@ function Order({ socket, username, room }) {
         data: order
       }).then((res)=>{
           console.log('Gửi thành công!');
+          setOrderId(res.data.order.id);
+          console.log(res.data.order.id);
       }).catch(function(err)
       {
         console.log(err + ' Lỗi gửi tin nhắn');
       })
 
 
-
-
       await socket.emit("send_order", order);
-      // setOrderList((list) => [...list, order]);
       axios({
         url: "http://localhost:5005/user/order-list",
         method: "GET",
@@ -67,9 +71,11 @@ function Order({ socket, username, room }) {
 
   useEffect(() => {
     getOrders();
+    getOrderLastID();
 
     setToken(localStorage.getItem('token'));
-    setUerId(localStorage.getItem('userId'));
+    setCurrentCustomerId(localStorage.getItem('customerId'));
+    setFirstName(localStorage.getItem('name'));
     
     socket.on("receive_order", (data) => {
       setOrderList((list) => [...list, data]);
@@ -90,64 +96,41 @@ function Order({ socket, username, room }) {
     })
   }
 
+  const getOrderLastID = () => {
+    axios({
+      url: "http://localhost:5005/user/order-lastId",
+      method: "GET",
+    }).then((res)=>{
+        setOrderLastId(res.data.lastId + 1);
+        console.log("Last ID: ")
+        console.log(res.data.lastId + 1);
+    }).catch(function(err)
+    {
+      console.log(err + ' Lỗi lấy tin nhắn');
+    })
+  }
+
   return (
     <div className="chat-window">
       <div className="chat-header">
-        <p>Order's List</p>
+        <p>THÔNG TIN ĐẶT HÀNG</p>
       </div>
-      <div className="chat-body">
-        <ScrollToBottom className="message-container">
-          {orderList.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className="message"
-              >
-                <div>
-                  <div className="message-content">
-                    <p>{item.totalPrice}</p>
-                  </div>
-                  <div className="message-meta">
-                    <p id="time">{item.time}</p>
-                    <p id="author">{item.user_id}</p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </ScrollToBottom>
-      </div>
-      <div className="">
-        <input
-          type="text"
-          value={currentCustomerId}
-          placeholder="CustomerID..."
-          onChange={(event) => {
-            setCurrentCustomerId(event.target.value);
-          }}
-        />
+      <div className="info-input">
         <input
           type="text"
           value={quantity}
-          placeholder="Quantity..."
+          placeholder="Số lượng..."
           onChange={(event) => {
             setQuantity(event.target.value);
           }}
         />
         <input
+          hidden={true}
           type="text"
-          value={price}
+          value={currentprice}
           placeholder="Giá..."
           onChange={(event) => {
             setPrice(event.target.value);
-          }}
-        />
-        <input
-          type="text"
-          value={productId}
-          placeholder="ProductId..."
-          onChange={(event) => {
-            setProductId(event.target.value);
           }}
         />
         <input

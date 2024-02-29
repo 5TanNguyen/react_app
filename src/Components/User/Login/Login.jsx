@@ -3,9 +3,9 @@ import './Login.css'
 import axios from 'axios';
 import { useNavigate} from 'react-router-dom';
 
-import user_icon from '../Assets/person.png'
-import email_icon from '../Assets/email.png'
-import password_icon from '../Assets/password.png'
+import user_icon from '../../Assets/person.png'
+import email_icon from '../../Assets/email.png'
+import password_icon from '../../Assets/password.png'
 
 const Login = () =>{
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ const Login = () =>{
                 .then((res)=>{
                     console.log(res.data)
                     // localStorage
-                    localStorage.setItem('token', res.data.token);
+                    localStorage.setItem('userToken', res.data.token);
                     localStorage.setItem('userId', res.data.user.id);
                     localStorage.setItem('userName', res.data.user.firstName);
                     localStorage.setItem('role', res.data.user.role.id);

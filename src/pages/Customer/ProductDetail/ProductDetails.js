@@ -16,6 +16,7 @@ export default function ProductDetails() {
   const [token, setToken] = useState();
   const [customerId, setCustomerId] = useState("");
   const [showChat, setShowChat] = useState(false);
+  const [price, setPrice] = useState();
 
   const [showOrderButton, setShowOrderButton] = useState(false);
 
@@ -35,9 +36,13 @@ export default function ProductDetails() {
   const [product, setProduct] = useState({
     id: '',
     name: '',
-    code: '',
+    species: '',
     description: '',
-    brand: ''
+    weight: '',
+    birthDate: '',
+    stock: '',
+    state: '',
+    imgUrl: ''
   }); 
 
   useEffect(() => {
@@ -54,8 +59,9 @@ export default function ProductDetails() {
       url: `http://localhost:5005/product-detail/${id}`,
       method: "GET" 
     }).then((res)=>{
-        console.log(res.data)
-        setProduct(res.data)
+        console.log(res.data.product);
+        setProduct(res.data.product);
+        setPrice(res.data.price);
     }).catch(function(err)
     {
       console.log(err + ' Lỗi getProductDetail');
@@ -71,7 +77,10 @@ export default function ProductDetails() {
         </div>
         <div className="details">
           <h2>{product.name}</h2>
+          <p>Giống: {product.species}</p>
+          <hr></hr>
           <p>{product.description}</p>
+          <h3>Giá hiện tại: {price} VNĐ</h3>
 
           {!showChat ? (
             <div className="joinChatContainer">
@@ -96,10 +105,9 @@ export default function ProductDetails() {
               <button onClick={joinRoom}>Đặt Mua</button>
             </div>
           ) : (
-            <Order socket={socket} username={username} room={room} product={product} />
+            <Order socket={socket} username={username} room={room} product={product} currentprice={price} />
           )}
         </div>
-        {/* <Modal product={product} socket={socket} username={username} room={room}/> */}
       </div>
       
     </div>

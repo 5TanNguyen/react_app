@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import './Products.scss';
+import './Product.css';
 // import io from 'socket.io-client';
 
 // const socket = io.connect("http://localhost:5005");
@@ -16,7 +16,8 @@ export default function Products() {
   useEffect(() => {
     setToken(localStorage.getItem('session'));
     getProducts();
-    console.log("token hehe " + localStorage.getItem('session'));
+
+    console.log( new Date(Date.now()).getHours())
   }, [])
   const getProducts = () => {
     axios({
@@ -34,28 +35,29 @@ export default function Products() {
   return (
     <div className="content">
 
-      <h2>5Tan</h2>
+      <h2>Cún Con</h2>
       <div className="products">
       { product?.map((item, index)=>{
           return(
-            <>
-            <div className="box">
+            <div
+              key={index}
+              className="box">
               <div className="contant">
                 <div className="img-box">
                   <img className="imgPet" src={item.imgUrl} alt=""></img>
                 </div>
                 <Link to={`/productDetail/${item.id}`}>
-                      <button className="btn-view">View</button>
+                      <button className="btn-view">Xem</button>
                 </Link>
                 <div className="detail">
                   <div className="info">
                     <h3>{item.name}</h3>
+                    <p>Còn: {item.stock}</p>
                   </div>
                   
                 </div>
               </div>
             </div>
-            </>
           )
       })
       }

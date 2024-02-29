@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {useSelector} from "react-redux";
 import "./navbar.css";
+import Logout from "../Logout/Logout";
 const NavBar = () => {
   // const user = useSelector((state)=> state.auth.logi);
   const [customer,setCustomer] = useState(null);
@@ -23,7 +24,8 @@ const NavBar = () => {
         <>
         <p className="navbar-user">Hi, <span> {cName}  </span> </p>
         <Link to="/products" className="navbar-login"> Products </Link>
-        <Link to="/logout" className="navbar-logout"> Log out</Link>
+        <Link to="/user" className="navbar-login"> Users </Link>
+        <Logout />
         </>
       ) : (    
         <>

@@ -6,6 +6,7 @@
   font-family: "Open Sans", sans-serif;
   display: grid;
   place-items: center;
+  left: 0px;
 }
 body {
   margin: 0%;
@@ -17,6 +18,7 @@ body {
   display: flex;
   flex-direction: column;
   text-align: center;
+  left: -100px;
 }
 
 .joinChatContainer h3 {
@@ -64,20 +66,41 @@ body {
   background: #263238;
   position: relative;
   cursor: pointer;
+  width: 300px;
 }
+
+.order-page{
+  margin-top: -150px;
+}
+
+.chat-window-order-page .chat-header{
+  height: 45px;
+  border-radius: 6px;
+  background: #263238;
+  position: relative;
+  cursor: pointer;
+  width: 300px;
+  margin-left: -100px;
+}
+
 .chat-window .chat-header p {
   display: block;
   padding: 0 1em 0 2em;
   color: #fff;
   font-weight: 700;
   line-height: 45px;
+  width: 300px;
+}
+
+.chat-body{
+  margin-left: -260px;
 }
 
 .chat-window .chat-body {
   height: calc(450px - (45px + 70px));
   border: 1px solid #263238;
   background: #fff;
-
+  width: 1000px;
   position: relative;
 }
 .chat-window .chat-body .message-container {
@@ -94,6 +117,7 @@ body {
   height: auto;
   padding: 10px;
   display: flex;
+  width: 800px;
 }
 
 .chat-window .chat-body .message .message-content {
@@ -168,7 +192,7 @@ body {
 
   outline: none;
   font-family: "Open Sans", sans-serif;
-}
+} 
 
 .chat-window .chat-footer button {
   border: 0;
@@ -188,4 +212,18 @@ body {
 }
 .hide {
   opacity: 0 !important;
+}
+
+.rowOrder{
+  width: 100%;
+}
+
+.addOrder-table{
+  /* position: absolute; */
+  margin-top: 10px;
+  margin-left: -250px;
+  /* background-color: blue; */
+  border-radius: 15px;
+  border-color: brown;
+  border-style: solid;
 }
